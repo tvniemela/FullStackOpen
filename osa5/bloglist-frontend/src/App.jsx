@@ -3,6 +3,7 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
+import BlogForm from './components/Blogform'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -14,6 +15,9 @@ const App = () => {
   const [newUrl, setNewUrl] =useState('')
   const [message, setMessage] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
+  const [createVisible, setCreateVisible] = useState(false)
+  
+
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -84,6 +88,9 @@ const App = () => {
     setNewUrl('')
   }
 
+  const hideWhenVisible = { display: createVisible ? 'none' : '' }
+  const showWhenVisible = { display: createVisible ? '' : 'none' }
+
   if (user === null) {
     return (
       <div>
@@ -109,32 +116,30 @@ const App = () => {
       </div>
     )
   }
- 
-  return (
+  return(
     <div>
       <h2>blogs</h2>
       <Notification message={message} errorMessage={errorMessage}/>
       <p>{user.name} logged in <button type='submit' onClick={handleLogOut}>logout</button></p>
-      
-      <h2>create new</h2>
-      <form onSubmit={createBlog}>
-        Title: <input
-        type='text' value={newTitle} name='Title' onChange={({target})=> setNewTitle(target.value)}>
-        </input><br></br>
-        Author: <input
-        type='text' value={newAuthor} name='Author' onChange={({target})=> setNewAuthor(target.value)}>
-        </input><br></br>
-        Url: <input
-        type='text' value={newUrl} name='Url' onChange={({target})=> setNewUrl(target.value)}>
-        </input><br></br>
-        <button type='submit'>create</button>
-      </form>
-      
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
-      )}
-      
-    </div>
+      <div style={hideWhenVisible}>
+        <button onClick={() => setCreateVisible(true)}>new note</button>
+      </div>
+      <div style={showWhenVisible}>
+        <BlogForm 
+        createBlog={createBlog}
+        newTitle={newTitle}
+        handleTitleChange={({target})=> setNewTitle(target.value)}
+        newAuthor={newAuthor}
+        handleAuthorChange={({target})=> setNewAuthor(target.value)}
+        newUrl={newUrl}
+        handleUrlChange={({target})=> setNewUrl(target.value)}  />
+        <button onClick={()=>setCreateVisible(false)}>cancel</button>
+      </div>
+    
+    {blogs.map(blog =>
+      <Blog key={blog.id} blog={blog} />
+    )}
+  </div>
   )
 }
 
