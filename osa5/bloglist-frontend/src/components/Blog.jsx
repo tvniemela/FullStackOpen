@@ -1,7 +1,7 @@
 import {useState} from 'react'
 
 const Blog = ({ blog, updateLikes}) => {
-  const [show,setShow]=useState(false)
+  const [show,setShow]=useState(true)
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
