@@ -1,6 +1,6 @@
 import {useState} from 'react'
 
-const Blog = ({ blog, updateLikes}) => {
+const Blog = ({ blog, updateLikes, removeBlog, username}) => {
   const [show,setShow]=useState(true)
   const blogStyle = {
     paddingTop: 10,
@@ -9,6 +9,7 @@ const Blog = ({ blog, updateLikes}) => {
     borderWidth: 1,
     marginBottom: 5
   }
+
   return(
   <div style={blogStyle}>
     {show ? 
@@ -24,11 +25,13 @@ const Blog = ({ blog, updateLikes}) => {
       likes {blog.likes} <button onClick={()=>updateLikes(blog.id, blog)}>like</button>
     <br></br>
     {blog.user.name}
+    <br></br>
+    {(blog.user.username==username) ?
+    <button style={{backgroundColor:'#0066ff',borderRadius:'4px'}} 
+    onClick={()=>removeBlog(blog.id,blog)}>remove</button> : null}
     </div>}
     <button onClick={()=>{setShow(!show)}}>{show?'view':'hide'}</button>
   </div>) 
-
 }
   
-
 export default Blog

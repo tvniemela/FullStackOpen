@@ -104,7 +104,12 @@ const App = () => {
     catch(exception){
       setErrorMessage('error')
     }
-    
+  }
+  const removeBlog = async (id,blog)=>{
+    if (window.confirm(`remove blog ${blog.title} by ${blog.author}`)) {
+      await blogService.remove(id)
+      setBlogs(blogs.filter(blog=>blog.id !== id))
+    }
   }
 
   if (user === null) {
@@ -147,9 +152,9 @@ const App = () => {
         newUrl={newUrl}
         handleUrlChange={({target})=> setNewUrl(target.value)}  />
         </Togglable>
-    
     {blogs.toSorted((a,b)=>b.likes - a.likes).map(blog =>
-      <Blog key={blog.id} blog={blog} updateLikes={updateLikes}/>
+      <Blog key={blog.id} blog={blog} updateLikes={updateLikes}
+      removeBlog={removeBlog} username={user.username} />
     )}
   </div>
   )
