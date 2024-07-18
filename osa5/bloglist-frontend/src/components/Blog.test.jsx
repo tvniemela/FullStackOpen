@@ -27,8 +27,6 @@ test('clicking view renders all info about the blog', async ()=>{
 
     const user = userEvent.setup()
     const button = screen.getByText('view')
-    //const button = await screen.findByText('hide',{exact:false})
-    //const button = screen.queryByText('view',{exact:false})
     await user.click(button)
 
     expect(screen.getByText(blog.title,{exact:false})).toBeDefined()
@@ -55,3 +53,4 @@ test('clicking like twice calls eventhandler twice', async ()=>{
 
     expect(mockHandler.mock.calls).toHaveLength(2)
 })
+
